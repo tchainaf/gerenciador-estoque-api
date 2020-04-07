@@ -4,15 +4,18 @@ var productService = require('../services/product.service');
 
 // routes dois get do produto, id e all
 // put delete post, dois gets
+
+router.get('/all', getAllProduct);
 router.get('/:id', getProduct);
-router.getAll('/all', getAllProduct);
 router.delete('/:id', deleteProduct);
 router.post('/', registerProduct);
-//router.put('/:id', updateProduct);
+router.put('/:id', updateProduct);
 
 module.exports = router;
 
 function getProduct(req, res) {
+    console.log("TESTE")
+    console.log(req.params.id)
     productService.getById(req.params.id)
         .then(function (product) {
             if (product) {
@@ -63,18 +66,4 @@ function registerProduct(req, res) {
         .catch(function (err) {
             res.status(400).send(err);
         });
-}
-//function updateProduct(req, res) {
-//    productService.update(req.params.id)
-//        .then(function (product) {
-            if (product) {
-                res.send(product);
-            } else {
-                res.sendStatus(404);
-            }
-        })
-        .catch(function (err) {
-            res.status(400).send(err);
-        });
-
 }

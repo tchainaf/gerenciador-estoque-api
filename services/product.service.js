@@ -9,19 +9,19 @@ var service = {};
 service.getById = getById;
 service.getAll = getAll;
 service.create = create;
-//service.update = update;
+service.update = update;
 service.delete = _delete;
 
 module.exports = service;
 
 function getById(id) {
     var deferred = Q.defer();
-
+    console.log(id)
     db.products.findById(id, function (err, product) {
         if (err)
             deferred.reject(err.name + ': ' + err.message);
-
-        deferred.resolve();
+        console.log(product)
+        deferred.resolve(product);
     });
 
     return deferred.promise;
@@ -38,7 +38,7 @@ function create(product) {
                 deferred.reject(err.name + ': ' + err.message);
             }
 
-            deferred.resolve();
+            deferred.resolve("Salvo");
         });
     return deferred.promise;
 }
@@ -46,21 +46,21 @@ function _delete(id) {
     var deferred = Q.defer();
 
     db.products.remove(
-        { id: mongo.helper.toObjectID(id) },
+        { _id: mongo.helper.toObjectID(id) },
         function (err) {
             if (err)  {
             console.log(err);
             deferred.reject(err.name + ': ' + err.message);
             }
 
-            deferred.resolve();
+            deferred.resolve("Deletou!");
         });
 
     return deferred.promise;
 }
 function getAll() {
     var deferred = Q.defer();
-
+    console.log('teste')
     db.products.find({}).toArray(function (err, product) {
         if (err) {
             console.log(err);
@@ -74,3 +74,4 @@ function getAll() {
 
     return deferred.promise;
 }
+
