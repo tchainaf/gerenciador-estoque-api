@@ -67,3 +67,19 @@ function registerProduct(req, res) {
             res.status(400).send(err);
         });
 }
+
+
+function updateProduct(req, res) {
+    productService.update(req.params.id, req.body) // pega o id e o objeto novo
+        .then(function (product) {
+            if (product) {
+                res.send(product);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+
+}

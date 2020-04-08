@@ -75,3 +75,19 @@ function getAll() {
     return deferred.promise;
 }
 
+function update(id,product) {
+    console.log(product);
+    var deferred = Q.defer();
+
+    db.products.update({ _id: mongo.helper.toObjectID(id)}, product,
+        function (err) {
+            if (err) {
+                console.log(err);
+                deferred.reject(err.name + ': ' + err.message);
+            }
+
+            deferred.resolve("Atualizado!");
+        });
+    return deferred.promise;
+}
+
