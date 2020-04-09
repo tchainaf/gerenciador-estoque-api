@@ -16,20 +16,18 @@ module.exports = service;
 
 function getById(id) {
     var deferred = Q.defer();
-    console.log(id)
     db.products.findById(id, function (err, product) {
-        if (err)
+        if (err) {
+            console.log(err);
             deferred.reject(err.name + ': ' + err.message);
-        console.log(product)
+        }
         deferred.resolve(product);
     });
-
     return deferred.promise;
 }
-function create(product) {
-    console.log(product);
-    var deferred = Q.defer();
 
+function create(product) {
+    var deferred = Q.defer();
     db.products.insert(
         product,
         function (err) {
@@ -37,57 +35,48 @@ function create(product) {
                 console.log(err);
                 deferred.reject(err.name + ': ' + err.message);
             }
-
             deferred.resolve("Salvo");
         });
     return deferred.promise;
 }
+
 function _delete(id) {
     var deferred = Q.defer();
-
     db.products.remove(
         { _id: mongo.helper.toObjectID(id) },
-        function (err) {
-            if (err)  {
-            console.log(err);
-            deferred.reject(err.name + ': ' + err.message);
-            }
-
-            deferred.resolve("Deletou!");
-        });
-
-    return deferred.promise;
-}
-function getAll() {
-    var deferred = Q.defer();
-    console.log('teste')
-    db.products.find({}).toArray(function (err, product) {
-        if (err) {
-            console.log(err);
-            deferred.reject(err.name + ': ' + err.message);
-        }
-        console.log(product);
-            // user not found
-            deferred.resolve(product);
-        
-    });
-
-    return deferred.promise;
-}
-
-function update(id,product) {
-    console.log(product);
-    var deferred = Q.defer();
-
-    db.products.update({ _id: mongo.helper.toObjectID(id)}, product,
         function (err) {
             if (err) {
                 console.log(err);
                 deferred.reject(err.name + ': ' + err.message);
             }
-
-            deferred.resolve("Atualizado!");
+            deferred.resolve("Deletou!");
         });
     return deferred.promise;
 }
 
+function getAll() {
+    var deferred = Q.defer();
+    db.products.find({}).toArray(function (err, product) {
+        if (err) {
+            console.log(err);
+            deferred.reject(err.name + ': ' + err.message);
+        }
+        deferred.resolve(product);
+    });
+    return deferred.promise;
+}
+
+function update(id, product) {
+    var deferred = Q.defer();
+    db.products.update(
+        { _id: mongo.helper.toObjectID(id) },
+        product,
+        function (err) {
+            if (err) {
+                console.log(err);
+                deferred.reject(err.name + ': ' + err.message);
+            }
+            deferred.resolve("Atualizado!");
+        });
+    return deferred.promise;
+}
